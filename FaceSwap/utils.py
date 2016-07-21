@@ -65,8 +65,12 @@ def getFaceKeypoints(img, detector, predictor):
     #detekcja twarzy
     dets = detector(img, 1)
 
-    if len(dets) > 0:
-        faceRectangle = dets[0]
+    if len(dets) == 0:
+        return None
+
+    shapes2D = []
+    for det in dets:
+        faceRectangle = det
 
         #detekcja punktow charakterystycznych twarzy
         dlibShape = predictor(img, faceRectangle)
@@ -75,14 +79,15 @@ def getFaceKeypoints(img, detector, predictor):
         #transpozycja, zeby ksztalt byl 2 x n a nie n x 2, pozniej ulatwia to obliczenia
         shape2D = shape2D.T
 
-        return shape2D
+        shapes2D.append(shape2D)
+
+    return shapes2D
     
-    return None
 
 def getFaceTextureCoords(img, mean3DShape, blendshapes, idxs2D, idxs3D, detector, predictor):
     projectionModel = models.OrthographicProjectionBlendshapes(blendshapes.shape[0])
 
-    keypoints = getFaceKeypoints(img, detector, predictor)
+    keypoints = getFaceKeypoints(img, detector, predictor)[0]
     modelParams = projectionModel.getInitialParameters(mean3DShape[:, idxs3D], keypoints[:, idxs2D])
     modelParams = NonLinearLeastSquares.GaussNewton(modelParams, projectionModel.residual, projectionModel.jacobian, ([mean3DShape[:, idxs3D], blendshapes[:, :, idxs3D]], keypoints[:, idxs2D]), verbose=0)
     textureCoords = projectionModel.fun([mean3DShape, blendshapes], modelParams)
