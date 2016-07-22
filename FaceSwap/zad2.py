@@ -12,6 +12,7 @@ import FaceRendering
 import utils
 
 print "Press T to draw the keypoints and the 3D model"
+print "Press R to start recording to a video file"
 
 #you need to download shape_predictor_68_face_landmarks.dat from the link below and unpack it where the solution file is
 #http://sourceforge.net/projects/dclib/files/dlib/v18.10/shape_predictor_68_face_landmarks.dat.bz2
@@ -30,6 +31,7 @@ modelParams = None
 lockedTranslation = False
 drawOverlay = False
 cap = cv2.VideoCapture(0)
+writer = None
 cameraImg = cap.read()[1]
 
 textureImg = cv2.imread(image_name)
@@ -63,6 +65,9 @@ while True:
                 drawPoints(cameraImg, shape2D.T)
                 drawProjectedShape(cameraImg, [mean3DShape, blendshapes], projectionModel, mesh, modelParams, lockedTranslation)
 
+    if writer is not None:
+        writer.write(cameraImg)
+
     cv2.imshow('image', cameraImg)
     key = cv2.waitKey(1)
 
@@ -70,3 +75,17 @@ while True:
         break
     if key == ord('t'):
         drawOverlay = not drawOverlay
+    if key == ord('r'):
+        if writer is None:
+            print "Starting video writer"
+            writer = cv2.VideoWriter("../out.avi", cv2.cv.CV_FOURCC('X', 'V', 'I', 'D'), 25, (cameraImg.shape[1], cameraImg.shape[0]))
+
+            if writer.isOpened():
+                print "Writer succesfully opened"
+            else:
+                writer = None
+                print "Writer opening failed"
+        else:
+            print "Stopping video writer"
+            writer.release()
+            writer = None
