@@ -20,6 +20,9 @@ print "Press R to start recording to a video file"
 #loading the keypoint detection model, the image and the 3D model
 predictor_path = "../shape_predictor_68_face_landmarks.dat"
 image_name = "../data/jolie.jpg"
+#the smaller this value gets the faster the detection will work
+#if it is too small, the user's face might not be detected
+maxImageSizeForDetection = 320
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(predictor_path)
@@ -40,7 +43,7 @@ renderer = FaceRendering.FaceRenderer(cameraImg, textureImg, textureCoords, mesh
 
 while True:
     cameraImg = cap.read()[1]
-    shapes2D = utils.getFaceKeypoints(cameraImg, detector, predictor)
+    shapes2D = utils.getFaceKeypoints(cameraImg, detector, predictor, maxImageSizeForDetection)
 
     if shapes2D is not None:
         for shape2D in shapes2D:

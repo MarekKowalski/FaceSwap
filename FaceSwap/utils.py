@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import models
+from dlib import rectangle
 import NonLinearLeastSquares
 
 def getNormal(triangle):
@@ -61,16 +62,23 @@ def load3DFaceModel(filename):
 
     return mean3DShape, blendshapes, mesh, idxs3D, idxs2D
 
-def getFaceKeypoints(img, detector, predictor):
+def getFaceKeypoints(img, detector, predictor, maxImgSizeForDetection=640):
+    imgScale = 1
+    scaledImg = img
+    if max(img.shape) > maxImgSizeForDetection:
+        imgScale = maxImgSizeForDetection / float(max(img.shape))
+        scaledImg = cv2.resize(img, (int(img.shape[1] * imgScale), int(img.shape[0] * imgScale)))
+
+
     #detekcja twarzy
-    dets = detector(img, 1)
+    dets = detector(scaledImg, 1)
 
     if len(dets) == 0:
         return None
 
     shapes2D = []
     for det in dets:
-        faceRectangle = det
+        faceRectangle = rectangle(int(det.left() / imgScale), int(det.top() / imgScale), int(det.right() / imgScale), int(det.bottom() / imgScale))
 
         #detekcja punktow charakterystycznych twarzy
         dlibShape = predictor(img, faceRectangle)
