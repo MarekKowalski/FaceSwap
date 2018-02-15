@@ -18,6 +18,11 @@ You can download all of the libraries above either from PIP or from Christoph Go
 
 You will also have to download the face alignment model from here: http://sourceforge.net/projects/dclib/files/dlib/v18.10/shape_predictor_68_face_landmarks.dat.bz2 and unpack it to the main project directory.
 
+## A faster and more stable version ##
+A faster and more stable version of FaceSwap is available on Dropbox [here](https://www.dropbox.com/sh/yfq0hcu0we2hed0/AABXckFonehfgLfdzicjqqJYa?dl=0). This new version is based on the [Deep Alignment Network](https://github.com/MarekKowalski/DeepAlignmentNetwork) method, which is faster than the currently used method if ran on a GPU and provides more stable and more precise facial landmarks. Please see the [GitHub repository of Deep Alignment Network](https://github.com/MarekKowalski/DeepAlignmentNetwork) for setup instructions.
+
+I hope to find time to include this faster version in the repo code soon.
+
 ## How it works ##
 The general outline of the method is as follows:
 
