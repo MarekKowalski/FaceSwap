@@ -14,7 +14,7 @@ def GaussNewton(x0, fun, funJack, args, maxIter=10, eps=10e-7, verbose=1):
         cost = np.sum(r**2)
 
         if verbose > 0:
-            print "Cost at iteration " + str(i) + ": " + str(cost)
+            print("Cost at iteration " + str(i) + ": " + str(cost))
 
         if (cost < eps or abs(cost - oldCost) < eps):
             break
@@ -31,13 +31,13 @@ def GaussNewton(x0, fun, funJack, args, maxIter=10, eps=10e-7, verbose=1):
         alpha = lineSearchRes["x"]
 
         x = x + alpha * direction
-        
+
     if verbose > 0:
-        print "Gauss Netwon finished after "  + str(i + 1) + " iterations"
+        print("Gauss Netwon finished after "  + str(i + 1) + " iterations")
         r = fun(x, *args)
         cost = np.sum(r**2)
-        print "cost = " + str(cost)
-        print "x = " + str(x)
+        print("cost = " + str(cost))
+        print("x = " + str(x))
 
     return x
 
@@ -50,7 +50,7 @@ def SteepestDescent(x0, fun, funJack, args, maxIter=10, eps=10e-7, verbose=1):
         cost = np.sum(r**2)
 
         if verbose > 0:
-            print "Cost at iteration " + str(i) + ": " + str(cost)
+            print("Cost at iteration " + str(i) + ": " + str(cost))
 
         #warunki stopu
         if (cost < eps or abs(cost - oldCost) < eps):
@@ -69,12 +69,11 @@ def SteepestDescent(x0, fun, funJack, args, maxIter=10, eps=10e-7, verbose=1):
         x = x + alpha * direction
 
     if verbose > 0:
-        print "Steepest Descent finished after "  + str(i + 1) + " iterations"
+        print("Steepest Descent finished after "  + str(i + 1) + " iterations")
         r = fun(x, *args)
         cost = np.sum(r**2)
-        print "cost = " + str(cost)
-        print "x = " + str(x)
+        print("cost = " + str(cost))
+        print("x = " + str(x))
 
 
     return x
-

@@ -6,15 +6,7 @@ You will find a short presentation the program's capabilities in the video below
 [![click to go to YouTube](http://img.youtube.com/vi/yZRuSsyxvos/0.jpg)](http://www.youtube.com/watch?v=yZRuSsyxvos)
 
 ## How to use it ##
-To start the program you will have to run a file named zad2.py (Polish for exercise 2), which will require:
-  * Python 2.7 (I recommend Anaconda)
-  * OpenCV (I used 2.4.13)
-  * Numpy
-  * dlib
-  * pygame
-  * PyOpenGL
-
-You can download all of the libraries above either from PIP or from Christoph Gohlke's excellent website: http://www.lfd.uci.edu/~gohlke/pythonlibs/
+To start the program you will have to run a Python script named zad2.py (Polish for exercise 2). You need to have Python 3 and some additional libraries installed. Once Python is on your machine, you should be able to automatically install the libraries by running `pip install -r requirements.txt` in the repo's root directory.
 
 You will also have to download the face alignment model from here: http://sourceforge.net/projects/dclib/files/dlib/v18.10/shape_predictor_68_face_landmarks.dat.bz2 and unpack it to the main project directory.
 
@@ -26,7 +18,7 @@ I hope to find time to include this faster version in the repo code soon.
 ## How it works ##
 The general outline of the method is as follows:
 
-First we take the input image (the image of a person we want to see on our own face) and find the face region and its landmarks. Once we have that we fit the 3D model to those landmarks (more on that later) the vertices of that model projected to the image space will be our texture coordinates. 
+First we take the input image (the image of a person we want to see on our own face) and find the face region and its landmarks. Once we have that we fit the 3D model to those landmarks (more on that later) the vertices of that model projected to the image space will be our texture coordinates.
 
 Once that is finished and everything is initialized the camera starts capturing images. For each captured images the following steps are taken:
 
@@ -44,7 +36,7 @@ The most crucial element of the entire process is the fitting of the 3D model. T
 
 The model is projected into the image space using the following equation:
 
-![equation](http://home.elka.pw.edu.pl/~mkowals6/lib/exe/fetch.php?media=faceswap_equation.png)
+![equation](./data/equation.png)
 
 where *s* is the projected shape, *a* is the scaling parameter, *P* are the first two rows of a rotation matrix that rotates the 3D face shape, *S_0* is the neutral face shape, *w_1-n* are the blendshape weights, *S_1-n* are the blendshapes, *t* is a 2D translation vector and *n* is the number of blendshapes.
 
@@ -58,10 +50,8 @@ The code is licensed under the MIT license, some of the data in the project is d
   * hand.png - http://pngimg.com/upload/hands_PNG905.png
   * eye.png - http://cache4.asset-cache.net/xd/521276062.jpg?v=1&c=IWSAsset&k=2&d=62CA815BFB1CE4807BD8B4D34504661CD6D7111452E48A17257DA6DB0BD6EA6DE35742C781328F67
   * candide 3D face model source - http://www.icg.isy.liu.se/candide/
-  
+
 ## Contact ##
-If need help or you found the app useful, do not hesitate to let me know. 
+If need help or you found the app useful, do not hesitate to let me know.
 
 Marek Kowalski <m.kowalski@ire.pw.edu.pl>, homepage: http://home.elka.pw.edu.pl/~mkowals6/
-  
-  

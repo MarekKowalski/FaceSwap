@@ -1,3 +1,4 @@
+import os
 import dlib
 import cv2
 import numpy as np
@@ -11,22 +12,22 @@ from drawing import *
 import FaceRendering
 import utils
 
-print "Press T to draw the keypoints and the 3D model"
-print "Press R to start recording to a video file"
+print("Press T to draw the keypoints and the 3D model")
+print("Press R to start recording to a video file")
 
 #you need to download shape_predictor_68_face_landmarks.dat from the link below and unpack it where the solution file is
 #http://sourceforge.net/projects/dclib/files/dlib/v18.10/shape_predictor_68_face_landmarks.dat.bz2
 
 #loading the keypoint detection model, the image and the 3D model
-predictor_path = "../shape_predictor_68_face_landmarks.dat"
-image_name = "../data/jolie.jpg"
+predictor_path = os.path.join(os.path.dirname(__file__), "..", "shape_predictor_68_face_landmarks.dat")
+image_name = os.path.join(os.path.dirname(__file__), "..", "data", "jolie.jpg")
 #the smaller this value gets the faster the detection will work
 #if it is too small, the user's face might not be detected
 maxImageSizeForDetection = 320
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(predictor_path)
-mean3DShape, blendshapes, mesh, idxs3D, idxs2D = utils.load3DFaceModel("../candide.npz")
+mean3DShape, blendshapes, mesh, idxs3D, idxs2D = utils.load3DFaceModel( os.path.join(os.path.dirname(__file__), "..", "candide.npz"))
 
 projectionModel = models.OrthographicProjectionBlendshapes(blendshapes.shape[0])
 
@@ -61,7 +62,7 @@ while True:
             mask = np.copy(renderedImg[:, :, 0])
             renderedImg = ImageProcessing.colorTransfer(cameraImg, renderedImg, mask)
             cameraImg = ImageProcessing.blendImages(renderedImg, cameraImg, mask)
-       
+
 
             #drawing of the mesh and keypoints
             if drawOverlay:
@@ -80,15 +81,18 @@ while True:
         drawOverlay = not drawOverlay
     if key == ord('r'):
         if writer is None:
-            print "Starting video writer"
-            writer = cv2.VideoWriter("../out.avi", cv2.cv.CV_FOURCC('X', 'V', 'I', 'D'), 25, (cameraImg.shape[1], cameraImg.shape[0]))
+            print("Starting video writer")
+            writer = cv2.VideoWriter(os.path.join(os.path.dirname(__file__), "..", "out.avi"),
+                                     cv2.VideoWriter_fourcc('X', 'V', 'I', 'D'),
+                                     25,
+                                     (cameraImg.shape[1], cameraImg.shape[0]))
 
             if writer.isOpened():
-                print "Writer succesfully opened"
+                print("Writer succesfully opened")
             else:
                 writer = None
-                print "Writer opening failed"
+                print("Writer opening failed")
         else:
-            print "Stopping video writer"
+            print("Stopping video writer")
             writer.release()
             writer = None
